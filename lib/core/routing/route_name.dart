@@ -10,4 +10,7 @@ class Routes {
   static const new_password = "/new_password";
   static const otp_verification = "/create_acount4";
   static const otp_succes = "/otp_success";
+  static const kuta = "/kuta";
+  static const search = "/search";
+  static const detail = "/detail";
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_app/core/routing/app_route.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,24 +13,43 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool intro = false;
+  String login ="";
 
-  @override
+
+  cekData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getBool('isIntro') != null) {
+        intro = prefs.getBool('isIntro')!;
+        if (prefs.getString('login') != null) {
+          login = prefs.getString('login')!;
+        }
+      }
+    });
+  }
+
   void initState() {
-    Future.delayed(Duration(seconds: 3),() => context.goNamed(Routes.Intro));
+    cekData();
+    Future.delayed(Duration(seconds: 3), () => !intro ? context.goNamed(Routes.Intro) : login == "" ? context.goNamed(Routes.login) : context.goNamed(Routes.home));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body : Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.9,
-              child: Image.asset('assets/img/traver.png',height: 200,width: 200,),
+              child: Image.asset(
+                'assets/img/traver.png',
+                height: 200,
+                width: 200,
+              ),
             ),
             Text('Test')
           ],
